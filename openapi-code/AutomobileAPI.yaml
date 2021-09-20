@@ -3,18 +3,13 @@ info:
   title: Automobile API
   version: 2.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/sunlifeorg/AutomobileAPI/1.0.0
+- url: https://virtserver.swaggerhub.com/sunlifeorg/AutomobileAPI/2.0.0
   description: SwaggerHub API Auto Mocking
 tags:
 - name: Automobile
   description: It is all about automobiles.
 - name: Cars
   description: It is all about only Cars
-- name: Bikes
-  description: It is all about only Bikes
-  externalDocs:
-    description: Click here for more details about Bikes
-    url: https://www.zigwheels.com/bikes
 - name: Luxury Vehicles
   description: It is all about luxury vehicles
 - name: Cutsomer
