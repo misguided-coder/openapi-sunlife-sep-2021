@@ -1,0 +1,209 @@
+openapi: 3.0.0
+info:
+  title: Automobile API
+  version: 2.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/sunlifeorg/AutomobileAPI/2.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Automobile
+  description: It is all about automobiles.
+- name: Cars
+  description: It is all about only Cars
+- name: Luxury Vehicles
+  description: It is all about luxury vehicles
+- name: Cutsomer
+  description: It is all about customers subscribed to all the vehicles
+  externalDocs:
+    description: Click here for more details about customers
+    url: https://customers.example.com
+paths:
+  /automobile/car/bymake/{make}:
+    get:
+      tags:
+      - Automobile
+      - Cars
+      summary: Fetch cars matching with make and having price in range
+      description: This operation will read cars with given valid make as path param
+        and min and max price as query parame
+      operationId: fetchCarByMakeAndPrice
+      parameters:
+      - name: make
+        in: path
+        description: Maker of the Car
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Audi
+          default: Audi
+      - name: minPrice
+        in: query
+        description: Minimum Price of the Car
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 12000.0
+          default: 12000.0
+      - name: maxPrice
+        in: query
+        description: Maximum Cost of the Car
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 500000.0
+          default: 500000.0
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                minItems: 0
+                type: array
+                items:
+                  $ref: '#/components/schemas/Single Car'
+        "404":
+          description: No Car Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+  /automobile/car:
+    get:
+      tags:
+      - Automobile
+      - Cars
+      summary: Fetch a single Car by VIN as query param
+      description: This operation will read any car with given valid vin as a query
+        param
+      operationId: fetchCarInfoByVIN
+      parameters:
+      - name: vin
+        in: query
+        description: VIN of the Car
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: VIN should be 4 bytes long
+          format: int32
+          example: 1111
+          default: 1111
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Single Car'
+        "404":
+          description: No Car Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+  /automobile/car/{vin}:
+    get:
+      tags:
+      - Automobile
+      - Cars
+      summary: Fetch a single Car by VIN as path param
+      description: This operation will read any car with given valid vinas a path
+        param
+      operationId: fetchCarByVIN
+      parameters:
+      - name: vin
+        in: path
+        description: VIN of the Car
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          description: VIN should be 4 bytes long
+          format: int32
+          example: 1111
+          default: 1111
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Single Car'
+        "404":
+          description: No Car Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+components:
+  schemas:
+    Single Car:
+      title: Single Car
+      required:
+      - color
+      - make
+      - model
+      - price
+      - vin
+      type: object
+      properties:
+        vin:
+          type: integer
+          description: VIN of the Car
+          format: int32
+          example: 1111
+          default: 1111
+        model:
+          type: string
+          description: Model of the Car
+          example: X1
+          default: X1
+        make:
+          type: string
+          description: Maker of the Car
+          example: BMW
+          default: BMW
+        price:
+          type: number
+          description: Price of the Car
+          format: double
+          example: 120000.0
+          default: 120000.0
+        color:
+          type: string
+          description: Color of the Car
+          example: Black
+          default: Black
+          enum:
+          - Yellow
+          - Black
+          - White
+          - Red
+      description: Will represent a car with all properties
+    inline_response_404:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error Code
+          example: 404
+        message:
+          type: string
+          description: Error Message
+          example: Invalid VIN given
+      description: "No Cars found in DB, Invalid VIN"
+      readOnly: true
